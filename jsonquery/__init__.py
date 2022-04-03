@@ -26,16 +26,30 @@ def init() -> typing.NoReturn:
 
         if _is_basic_value(value):
             element = etree.Element(key)
+            element.set("datatype", type(value).__name__)
+            element.set("list_member", str(False))
             element.text = str(value)
             elements.append(element)
         elif isinstance(value, abstract_collections.Mapping):
             element = etree.Element(key)
+            element.set("datatype", type(value).__name__)
+            element.set("list_member", str(False))
             for sub_key, sub_value in value.items():
                 for node in _build_element(sub_key, sub_value):
                     element.append(node)
             elements.append(element)
+        elif _is_collection(value):
+            list_index = 0
+            for sub_value in value:
+                for element in _build_element(key, sub_value):
+                    element.set("list_member", str(True))
+                    element.set("index", str(list_index))
+                    elements.append(element)
+                list_index += 1
         elif hasattr(value, "__dict__"):
             element = etree.Element(key)
+            element.set("datatype", type(value).__name__)
+            element.set("list_member", str(False))
             for sub_key, sub_value in value.__dict__.items():
                 if isinstance(sub_value, typing.Callable):
                     continue
@@ -48,6 +62,8 @@ def init() -> typing.NoReturn:
         elif _is_slotted(value):
             keys: typing.Iterable[str] = value.__slots__
             element = etree.Element(key)
+            element.set("datatype", type(value).__name__)
+            element.set("list_member", str(False))
 
             for slotted_variable in keys:
                 value = getattr(value, slotted_variable)
@@ -61,10 +77,6 @@ def init() -> typing.NoReturn:
                     element.append(node)
 
             elements.append(element)
-        elif _is_collection(value):
-            for sub_value in value:
-                for element in _build_element(key, sub_value):
-                    elements.append(element)
         else:
             raise ValueError(f"Object of type '{type(value)}' ({str(value)}) cannot be converted to XML.")
 
