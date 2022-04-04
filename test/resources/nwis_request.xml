@@ -1,141 +1,141 @@
 <root>
-  <name>ns1:timeSeriesResponseType</name>
-  <declaredType>org.cuahsi.waterml.TimeSeriesResponseType</declaredType>
-  <scope>javax.xml.bind.JAXBElement$GlobalScope</scope>
-  <value>
-    <queryInfo>
-      <queryURL>http://waterservices.usgs.gov/nwis/iv/format=json&amp;indent=on&amp;sites=01646500&amp;period=PT1H&amp;parameterCd=00060&amp;siteStatus=all</queryURL>
-      <criteria>
-        <locationParam>[ALL:01646500]</locationParam>
-        <variableParam>[00060]</variableParam>
+  <name datatype="str" list_member="False">ns1:timeSeriesResponseType</name>
+  <declaredType datatype="str" list_member="False">org.cuahsi.waterml.TimeSeriesResponseType</declaredType>
+  <scope datatype="str" list_member="False">javax.xml.bind.JAXBElement$GlobalScope</scope>
+  <value datatype="dict" list_member="False">
+    <queryInfo datatype="dict" list_member="False">
+      <queryURL datatype="str" list_member="False">http://waterservices.usgs.gov/nwis/iv/format=json&amp;indent=on&amp;sites=01646500&amp;period=PT1H&amp;parameterCd=00060&amp;siteStatus=all</queryURL>
+      <criteria datatype="dict" list_member="False">
+        <locationParam datatype="str" list_member="False">[ALL:01646500]</locationParam>
+        <variableParam datatype="str" list_member="False">[00060]</variableParam>
       </criteria>
-      <note>
-        <value>[ALL:01646500]</value>
-        <title>filter:sites</title>
+      <note datatype="dict" list_member="True" index="0">
+        <value datatype="str" list_member="False">[ALL:01646500]</value>
+        <title datatype="str" list_member="False">filter:sites</title>
       </note>
-      <note>
-        <value>[mode=PERIOD, period=PT1H, modifiedSince=null]</value>
-        <title>filter:timeRange</title>
+      <note datatype="dict" list_member="True" index="1">
+        <value datatype="str" list_member="False">[mode=PERIOD, period=PT1H, modifiedSince=null]</value>
+        <title datatype="str" list_member="False">filter:timeRange</title>
       </note>
-      <note>
-        <value>methodIds=[ALL]</value>
-        <title>filter:methodId</title>
+      <note datatype="dict" list_member="True" index="2">
+        <value datatype="str" list_member="False">methodIds=[ALL]</value>
+        <title datatype="str" list_member="False">filter:methodId</title>
       </note>
-      <note>
-        <value>2022-03-15T12:37:07.500Z</value>
-        <title>requestDT</title>
+      <note datatype="dict" list_member="True" index="3">
+        <value datatype="str" list_member="False">2022-03-15T12:37:07.500Z</value>
+        <title datatype="str" list_member="False">requestDT</title>
       </note>
-      <note>
-        <value>a04cffb0-a45c-11ec-b279-005056beda50</value>
-        <title>requestId</title>
+      <note datatype="dict" list_member="True" index="4">
+        <value datatype="str" list_member="False">a04cffb0-a45c-11ec-b279-005056beda50</value>
+        <title datatype="str" list_member="False">requestId</title>
       </note>
-      <note>
-        <value>Provisional data are subject to revision. Go to http://waterdata.usgs.gov/nwis/help/?provisional for more information.</value>
-        <title>disclaimer</title>
+      <note datatype="dict" list_member="True" index="5">
+        <value datatype="str" list_member="False">Provisional data are subject to revision. Go to http://waterdata.usgs.gov/nwis/help/?provisional for more information.</value>
+        <title datatype="str" list_member="False">disclaimer</title>
       </note>
-      <note>
-        <value>caas01</value>
-        <title>server</title>
+      <note datatype="dict" list_member="True" index="6">
+        <value datatype="str" list_member="False">caas01</value>
+        <title datatype="str" list_member="False">server</title>
       </note>
     </queryInfo>
-    <timeSeries>
-      <sourceInfo>
-        <siteName>POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA</siteName>
-        <siteCode>
-          <value>01646500</value>
-          <network>NWIS</network>
-          <agencyCode>USGS</agencyCode>
+    <timeSeries datatype="dict" list_member="True" index="0">
+      <sourceInfo datatype="dict" list_member="False">
+        <siteName datatype="str" list_member="False">POTOMAC RIVER NEAR WASH, DC LITTLE FALLS PUMP STA</siteName>
+        <siteCode datatype="dict" list_member="True" index="0">
+          <value datatype="str" list_member="False">01646500</value>
+          <network datatype="str" list_member="False">NWIS</network>
+          <agencyCode datatype="str" list_member="False">USGS</agencyCode>
         </siteCode>
-        <timeZoneInfo>
-          <defaultTimeZone>
-            <zoneOffset>-05:00</zoneOffset>
-            <zoneAbbreviation>EST</zoneAbbreviation>
+        <timeZoneInfo datatype="dict" list_member="False">
+          <defaultTimeZone datatype="dict" list_member="False">
+            <zoneOffset datatype="str" list_member="False">-05:00</zoneOffset>
+            <zoneAbbreviation datatype="str" list_member="False">EST</zoneAbbreviation>
           </defaultTimeZone>
-          <daylightSavingsTimeZone>
-            <zoneOffset>-04:00</zoneOffset>
-            <zoneAbbreviation>EDT</zoneAbbreviation>
+          <daylightSavingsTimeZone datatype="dict" list_member="False">
+            <zoneOffset datatype="str" list_member="False">-04:00</zoneOffset>
+            <zoneAbbreviation datatype="str" list_member="False">EDT</zoneAbbreviation>
           </daylightSavingsTimeZone>
-          <siteUsesDaylightSavingsTime>True</siteUsesDaylightSavingsTime>
+          <siteUsesDaylightSavingsTime datatype="bool" list_member="False">True</siteUsesDaylightSavingsTime>
         </timeZoneInfo>
-        <geoLocation>
-          <geogLocation>
-            <srs>EPSG:4326</srs>
-            <latitude>38.94977778</latitude>
-            <longitude>-77.12763889</longitude>
+        <geoLocation datatype="dict" list_member="False">
+          <geogLocation datatype="dict" list_member="False">
+            <srs datatype="str" list_member="False">EPSG:4326</srs>
+            <latitude datatype="float" list_member="False">38.94977778</latitude>
+            <longitude datatype="float" list_member="False">-77.12763889</longitude>
           </geogLocation>
         </geoLocation>
-        <siteProperty>
-          <value>ST</value>
-          <name>siteTypeCd</name>
+        <siteProperty datatype="dict" list_member="True" index="0">
+          <value datatype="str" list_member="False">ST</value>
+          <name datatype="str" list_member="False">siteTypeCd</name>
         </siteProperty>
-        <siteProperty>
-          <value>02070008</value>
-          <name>hucCd</name>
+        <siteProperty datatype="dict" list_member="True" index="1">
+          <value datatype="str" list_member="False">02070008</value>
+          <name datatype="str" list_member="False">hucCd</name>
         </siteProperty>
-        <siteProperty>
-          <value>24</value>
-          <name>stateCd</name>
+        <siteProperty datatype="dict" list_member="True" index="2">
+          <value datatype="str" list_member="False">24</value>
+          <name datatype="str" list_member="False">stateCd</name>
         </siteProperty>
-        <siteProperty>
-          <value>24031</value>
-          <name>countyCd</name>
+        <siteProperty datatype="dict" list_member="True" index="3">
+          <value datatype="str" list_member="False">24031</value>
+          <name datatype="str" list_member="False">countyCd</name>
         </siteProperty>
       </sourceInfo>
-      <variable>
-        <variableCode>
-          <value>00060</value>
-          <network>NWIS</network>
-          <vocabulary>NWIS:UnitValues</vocabulary>
-          <variableID>45807197</variableID>
-          <default>True</default>
+      <variable datatype="dict" list_member="False">
+        <variableCode datatype="dict" list_member="True" index="0">
+          <value datatype="str" list_member="False">00060</value>
+          <network datatype="str" list_member="False">NWIS</network>
+          <vocabulary datatype="str" list_member="False">NWIS:UnitValues</vocabulary>
+          <variableID datatype="int" list_member="False">45807197</variableID>
+          <default datatype="bool" list_member="False">True</default>
         </variableCode>
-        <variableName>Streamflow, ft&amp;#179;/s</variableName>
-        <variableDescription>Discharge, cubic feet per second</variableDescription>
-        <valueType>Derived Value</valueType>
-        <unit>
-          <unitCode>ft3/s</unitCode>
+        <variableName datatype="str" list_member="False">Streamflow, ft&amp;#179;/s</variableName>
+        <variableDescription datatype="str" list_member="False">Discharge, cubic feet per second</variableDescription>
+        <valueType datatype="str" list_member="False">Derived Value</valueType>
+        <unit datatype="dict" list_member="False">
+          <unitCode datatype="str" list_member="False">ft3/s</unitCode>
         </unit>
-        <options>
-          <option>
-            <name>Statistic</name>
-            <optionCode>00000</optionCode>
+        <options datatype="dict" list_member="False">
+          <option datatype="dict" list_member="True" index="0">
+            <name datatype="str" list_member="False">Statistic</name>
+            <optionCode datatype="str" list_member="False">00000</optionCode>
           </option>
         </options>
-        <noDataValue>-999999.0</noDataValue>
-        <oid>45807197</oid>
+        <noDataValue datatype="float" list_member="False">-999999.0</noDataValue>
+        <oid datatype="str" list_member="False">45807197</oid>
       </variable>
-      <values>
-        <value>
-          <value>9000</value>
-          <qualifiers>P</qualifiers>
-          <dateTime>2022-03-15T07:30:00.000-04:00</dateTime>
+      <values datatype="dict" list_member="True" index="0">
+        <value datatype="dict" list_member="True" index="0">
+          <value datatype="str" list_member="False">9000</value>
+          <qualifiers datatype="str" list_member="True" index="0">P</qualifiers>
+          <dateTime datatype="str" list_member="False">2022-03-15T07:30:00.000-04:00</dateTime>
         </value>
-        <value>
-          <value>9250</value>
-          <qualifiers>P</qualifiers>
-          <dateTime>2022-03-15T07:30:00.000-04:00</dateTime>
+        <value datatype="dict" list_member="True" index="1">
+          <value datatype="str" list_member="False">9250</value>
+          <qualifiers datatype="str" list_member="True" index="0">P</qualifiers>
+          <dateTime datatype="str" list_member="False">2022-03-15T07:30:00.000-04:00</dateTime>
         </value>
-        <value>
-          <value>9570</value>
-          <qualifiers>P</qualifiers>
-          <dateTime>2022-03-15T07:45:00.000-04:00</dateTime>
+        <value datatype="dict" list_member="True" index="2">
+          <value datatype="str" list_member="False">9570</value>
+          <qualifiers datatype="str" list_member="True" index="0">P</qualifiers>
+          <dateTime datatype="str" list_member="False">2022-03-15T07:45:00.000-04:00</dateTime>
         </value>
-        <qualifier>
-          <qualifierCode>P</qualifierCode>
-          <qualifierDescription>Provisional data subject to revision.</qualifierDescription>
-          <qualifierID>0</qualifierID>
-          <network>NWIS</network>
-          <vocabulary>uv_rmk_cd</vocabulary>
+        <qualifier datatype="dict" list_member="True" index="0">
+          <qualifierCode datatype="str" list_member="False">P</qualifierCode>
+          <qualifierDescription datatype="str" list_member="False">Provisional data subject to revision.</qualifierDescription>
+          <qualifierID datatype="int" list_member="False">0</qualifierID>
+          <network datatype="str" list_member="False">NWIS</network>
+          <vocabulary datatype="str" list_member="False">uv_rmk_cd</vocabulary>
         </qualifier>
-        <method>
-          <methodDescription></methodDescription>
-          <methodID>69928</methodID>
+        <method datatype="dict" list_member="True" index="0">
+          <methodDescription datatype="str" list_member="False"></methodDescription>
+          <methodID datatype="int" list_member="False">69928</methodID>
         </method>
       </values>
-      <name>USGS:01646500:00060:00000</name>
+      <name datatype="str" list_member="False">USGS:01646500:00060:00000</name>
     </timeSeries>
   </value>
-  <nil>False</nil>
-  <globalScope>True</globalScope>
-  <typeSubstituted>False</typeSubstituted>
+  <nil datatype="bool" list_member="False">False</nil>
+  <globalScope datatype="bool" list_member="False">True</globalScope>
+  <typeSubstituted datatype="bool" list_member="False">False</typeSubstituted>
 </root>
