@@ -1,40 +1,131 @@
+import os.path
 import typing
 from lxml import etree
 import io
 from collections import Counter
+import json
 
 
 def init() -> typing.NoReturn:
-    if hasattr(etree, "from_json") and hasattr(etree, "from_json_file"):
+    """
+    Builds functions for querying json files and attaches them to lxml's etree
+    """
+    # Go ahead and return if all these functions have already been created - our work is done here
+    if hasattr(etree, "from_json") \
+            and hasattr(etree, "from_json_file") \
+            and hasattr(etree, 'query_from_json') \
+            and hasattr(etree, 'query_from_json_file'):
         return
 
-    import json
     import collections.abc as abstract_collections
 
+    # Try to import numpy; if it's available, cool, we can use some of its functionality. If not, we can just carry on
+    try:
+        import numpy
+
+        def numpy_is_available() -> bool:
+            return True
+    except ImportError as e:
+        def numpy_is_available() -> bool:
+            return False
+
     def _is_slotted(value: typing.Any) -> bool:
+        """
+        Indicates whether the given value is an object that stores its members as slot members instead of the __dict__
+        :param value: The value to test
+        :return: whether the given value is an object that stores its members as slot members instead of the __dict__
+        """
+        # Classes that use __slots__ and classes that use __dict__ are mutually exclusive -
+        # if this value has __slots__, the keys for its members are in __slots__, not __dict__
         return hasattr(value, "__slots__")
 
-    def _is_collection(value: typing.Any) -> bool:
+    def _is_container(value: typing.Any) -> bool:
+        """
+        Indicates whether the given value is a container for other values
+
+        `bytes` and `str` are both considered containers by traditional means. One stores bytes,
+        the other stores characters. As a result, those are specifically excluded.
+
+        :param value: The value to test
+        :return: True if the value implements the Container base class and is not a str or bytes, False otherwise
+        """
+        # `bytes`
         return not isinstance(value, str) \
                and not isinstance(value, bytes) \
                and isinstance(value, abstract_collections.Container)
 
     def _is_basic_value(value: typing.Any) -> bool:
-        return not hasattr(value, "__dict__") and not _is_slotted(value) and not _is_collection(value)
+        """
+        Indicates whether a value may be considered a single, atomic value and not a composite value
+        (like an object) or a container
+
+        :param value: The value to test
+        :return: True if the value is not a composite value or a container, False otherwise
+        """
+        return not hasattr(value, "__dict__") and not _is_slotted(value) and not _is_container(value)
 
     def _build_element(key: str, value: typing.Any) -> typing.Iterable[etree.ElementBase]:
+        """
+        Constructs a sequence of XML elements based on a key-value pair
+
+        :param key: The name of a presumed JSON node that contained the passed value
+        :param value: The core value alluded to by the key within the JSON document
+        :return: A sequence of all recursively created XML elements
+        """
         elements: typing.List[etree.ElementBase] = list()
 
         if _is_basic_value(value):
+            # If the value is atomic, we can make a simple xml element and move on
             element = etree.Element(key)
             element.set("datatype", type(value).__name__)
             element.set("list_member", str(False))
             element.text = str(value)
             elements.append(element)
         elif isinstance(value, abstract_collections.Mapping):
+            # The passed in value was a JSON object - we'll need to translate that into a more complex xml mapping
+            """
+            ```
+            "key": {
+                "object1": 3,
+                "object2": [
+                    3,
+                    5,
+                    6
+                ],
+                "object3": {
+                    "object4": 5,
+                    "object5": [
+                        1,
+                        2
+                        3
+                    ],
+                    "object6": "word"
+                }
+            }
+            ```
+            
+            should end up looking like:
+            
+            ```
+            <key>
+                <object1 datatype="int" list_member="false">3</object1>
+                <object2 datatype="int" list_member="true" index="0">3</object2>
+                <object2 datatype="int" list_member="true" index="1">5</object2>
+                <object2 datatype="int" list_member="true" index="3">6</object2>
+                <object3 datatype="dict" list_member="false">
+                    <object4 datatype="int" list_member="false">5</object4>
+                    <object5 datatype="int" list_member="true" index="0">1</object5>
+                    <object5 datatype="int" list_member="true" index="1">2</object5>
+                    <object5 datatype="int" list_member="true" index="2">3</object5>
+                    <object6 datatype="str" list_member="false">word</object6>
+                </object3>
+            </key>
+            ```
+            """
             element = etree.Element(key)
             element.set("datatype", type(value).__name__)
             element.set("list_member", str(False))
+
             found_keys = Counter()
             found_nodes = list()
             for sub_key, sub_value in value.items():
@@ -50,7 +141,7 @@ def init() -> typing.NoReturn:
                     key_indices[node.tag] += 1
                 element.append(node)
             elements.append(element)
-        elif _is_collection(value):
+        elif _is_container(value):
             list_index = 0
             for sub_value in value:
                 for element in _build_element(key, sub_value):
@@ -122,22 +213,22 @@ def init() -> typing.NoReturn:
 
         return from_json(data)
 
-
     def query_from_json(data: typing.Union[str, io.IOBase, dict], path: str) -> typing.Sequence[etree.ElementBase]:
-        tree = etree.from_json(data)
+        tree = from_json(data)
         xpath_results = tree.xpath(path)
         converted_results = _xml_to_json(xpath_results)
         return converted_results
 
-
     def query_from_json_file(data: typing.Union[str, io.IOBase], path: str) -> typing.Any:
-        tree = etree.from_json_file(data)
+        tree = from_json_file(data)
         xpath_results = tree.xpath(path)
         converted_results = _xml_to_json(xpath_results)
 
         if len(converted_results) == 1:
             keys = [key for key in converted_results.keys()]
             converted_results = converted_results[keys[0]]
+        elif numpy_is_available():
+            converted_results = numpy.array(converted_results)
 
         return converted_results
 
@@ -203,6 +294,8 @@ def init() -> typing.NoReturn:
         if len(results) == 1:
             keys = [key for key in results.keys()]
             results = results[keys[0]]
+        elif numpy_is_available():
+            results = numpy.array(results)
 
         return results
 
@@ -230,11 +323,14 @@ def xml_from_json_file(path_or_buffer: typing.Union[str, io.IOBase]) -> etree.El
     return etree.from_json_file(path_or_buffer)
 
 
-def query_from_json(data: typing.Union[str, io.IOBase, dict], path: str) -> typing.Sequence[etree.ElementBase]:
+def query(data: typing.Union[str, io.IOBase, dict], path: str) -> typing.Any:
+    if isinstance(data, str) and os.path.exists(data):
+        with open(data) as data_file:
+            data = json.load(data_file)
+    elif isinstance(data, io.IOBase):
+        data = json.load(data)
+    elif isinstance(data, str):
+        data = json.loads(data)
+
     results = etree.query_from_json(data, path)
-    return results
-
-
-def query_from_json_file(data: typing.Union[str, io.IOBase], path: str) -> typing.Any:
-    results = etree.query_from_json_file(data, path)
     return results

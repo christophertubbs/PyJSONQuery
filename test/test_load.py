@@ -11,7 +11,7 @@ class TestFileLoading(unittest.TestCase):
 
     def test_query(self):
         data_path = os.path.join(os.path.dirname(__file__), "resources", "nwis_request.json")
-        results = jsonquery.query_from_json_file(data_path, "//value/timeSeries[1]/values/value/value")
+        results = jsonquery.query(data_path, "//value/timeSeries[1]/values/value/value")
         print(results)
 
 
